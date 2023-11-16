@@ -9,8 +9,8 @@ import parameters.control_parameters as AP
 import parameters.aerosonde_parameters as MAV
 from tools.transfer_function import TransferFunction
 from tools.wrap import wrap
-from control.pi_control import PIControl
-from control.pd_control_with_rate import PDControlWithRate
+from controls.pi_control import PIControl
+from controls.pd_control_with_rate import PDControlWithRate
 from message_types.msg_state import MsgState
 from message_types.msg_delta import MsgDelta
 
@@ -19,24 +19,21 @@ class Autopilot:
     def __init__(self, ts_control):
         # instantiate lateral controllers
         self.roll_from_aileron = PDControlWithRate(
-                        kp=AP.roll_kp,
-                        kd=AP.roll_kd,
-                        limit=np.radians(45))
+            kp=AP.roll_kp, kd=AP.roll_kd, limit=np.radians(45)
+        )
         self.course_from_roll = PIControl(
-                        kp=AP.course_kp,
-                        ki=AP.course_ki,
-                        Ts=ts_control,
-                        limit=np.radians(30))
+            kp=AP.course_kp, ki=AP.course_ki, Ts=ts_control, limit=np.radians(30)
+        )
         self.yaw_damper = TransferFunction(
-                        num=np.array([[AP.yaw_damper_kr, 0]]),
-                        den=np.array([[1, AP.yaw_damper_p_wo]]),
-                        Ts=ts_control)
+            num=np.array([[AP.yaw_damper_kr, 0]]),
+            den=np.array([[1, AP.yaw_damper_p_wo]]),
+            Ts=ts_control,
+        )
 
         # instantiate TECS controllers
         self.pitch_from_elevator = PDControlWithRate(
-                        kp=AP.pitch_kp,
-                        kd=AP.pitch_kd,
-                        limit=np.radians(45))
+            kp=AP.pitch_kp, kd=AP.pitch_kd, limit=np.radians(45)
+        )
         # throttle gains (unitless)
         self.E_kp = 0
         self.E_ki = 0
@@ -56,20 +53,14 @@ class Autopilot:
         self.commanded_state = MsgState()
 
     def update(self, cmd, state):
-	
-	###### TODO ######
+        ###### TODO ######
         # lateral autopilot
-
 
         # longitudinal TECS autopilot
 
-
         # construct output and commanded states
-        delta = MsgDelta(elevator=0,
-                         aileron=0,
-                         rudder=0,
-                         throttle=0)
-        self.commanded_state.altitude = 0                
+        delta = MsgDelta(elevator=0, aileron=0, rudder=0, throttle=0)
+        self.commanded_state.altitude = 0
         self.commanded_state.Va = 0
         self.commanded_state.phi = 0
         self.commanded_state.theta = 0
