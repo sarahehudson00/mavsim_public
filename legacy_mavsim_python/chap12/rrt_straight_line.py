@@ -45,7 +45,7 @@ class RRTStraightLine:
         self.plot_app = pg.QtGui.QApplication([])  # initialize QT
         self.plot_window = gl.GLViewWidget()  # initialize the view object
         self.plot_window.setWindowTitle('World Viewer')
-        self.plot_window.setGeometry(0, 0, 1500, 1500)  # args: upper_left_x, upper_right_y, width, height
+        # self.plot_window.setGeometry(0, 0, 1500, 1500)  # args: upper_left_x, upper_right_y, width, height
         grid = gl.GLGridItem() # make a grid to represent the ground
         grid.scale(scale/20, scale/20, scale/20) # set the size of the grid (distance between each line)
         self.plot_window.addItem(grid) # add grid to viewer

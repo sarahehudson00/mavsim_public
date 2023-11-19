@@ -108,7 +108,7 @@ while sim_time < SIM.end_time:
     estimated_state = mav.true_state
 
     # -------camera control-------------
-    # gimbal_cmd = gimbal.pointAtGround(estimated_state)  # point gimbal at ground
+    gimbal_cmd = gimbal.pointAtGround(estimated_state)  # point gimbal at ground
     estimated_target_position = geolocation.update(estimated_state, pixels)
     # gimbal_cmd = gimbal.pointAtPosition(estimated_state, estimated_target_position) # point gimbal at target position
     gimbal_cmd = gimbal.pointAtPosition(
